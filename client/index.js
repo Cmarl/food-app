@@ -27,7 +27,29 @@ angular.module('food-app', ['firebase'])
     return ((weight / (height * height)) * 703).toFixed(2);
   };
 
+  $scope.foods.$loaded().then(function(){
+    newWeight();
+  });
+
+  function newWeight() {
+    var totalCals = $scope.foods.reduce(function(acc, curr){
+      return acc + (curr.calories * curr.servings);
+    },0);
+    $scope.weightGained = totalCals / 3500;
+  }
+
   $scope.addFood = function(){
-    $scope.foods.$add($scope.food);
+    var now = new Date();
+    $scope.food.date = now.getTime();
+    $scope.foods.$add($scope.food).then(function(){
+      newWeight();
+    });
+  };
+
+  $scope.undo = function(){
+    newWeight();
+    $scope.foods.$remove(this.$index).then(function(){
+      newWeight();
+    });
   };
 }]);

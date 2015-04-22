@@ -44,11 +44,11 @@ html(lang='en', ng-app='food-app')
                 select.form-control(ng-model="user.heightUnit")
                   option(value="centimeters") Centimeters
                   option(value="inches") Inches
+          .form-group
+            button.form-control.btn.btn-info(ng-click='saveUser()') Save User
     .container
       .row
         .col-xs-12
-          .form-group
-            button.form-control.btn.btn-info(ng-click='saveUser()') Save User
           .row
             .col-xs-11.col-xs-offset-1
               h3 Calculated BMI: {{getBmi(user.height, user.weight)}}
@@ -74,6 +74,29 @@ html(lang='en', ng-app='food-app')
                 input#servings.form-control(type="number" ng-model="food.servings")
           .form-group
             button.form-control.btn.btn-danger(ng-click='addFood()') Add Food
+    .container
+      .row
+        .col-xs-12
+          table.table.table-striped
+            thead
+              tr
+                th Description
+                th Meal
+                th Calories
+                th Servings
+                th Date
+            tbody
+              tr(ng-repeat="food in foods" ng-click="undo()")
+                td {{food.description}}
+                td {{food.meal}}
+                td {{food.calories}}
+                td {{food.servings}}
+                td {{food.date| date:"MM/dd/yyyy 'at' h:mma"}}
+      .row
+        .col-xs-6
+          h2 Start Weight: {{user.weight | number:2}}
+        .col-xs-6(ng-model="weightGained")
+          h2 New Weight: {{user.weight + weightGained | number:2}}
     script(src='/vendor/jquery/dist/jquery.min.js')
     script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
     script(src='/vendor/lodash/lodash.min.js')
