@@ -38,12 +38,26 @@ angular.module('food-app', ['firebase'])
     $scope.weightGained = totalCals / 3500;
   }
 
-  $scope.addFood = function(){
+  $scope.saveFood = function(){
     var now = new Date();
-    $scope.food.date = now.getTime();
-    $scope.foods.$add($scope.food).then(function(){
-      newWeight();
-    });
+    if ($scope.food.$id){
+      $scope.foods.$save($scope.food).then(function(){
+        newWeight();
+        $scope.food = {};
+      });
+    } else {
+      $scope.food.date = now.getTime();
+      $scope.foods.$add($scope.food).then(function(){
+        newWeight();
+        $scope.food = {};
+
+      });
+    }
+
+  };
+
+  $scope.edit = function(food){
+    $scope.food = food;
   };
 
   $scope.undo = function(){

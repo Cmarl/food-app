@@ -73,20 +73,24 @@ html(lang='en', ng-app='food-app')
                 label(for="servings") # of Servings
                 input#servings.form-control(type="number" ng-model="food.servings")
           .form-group
-            button.form-control.btn.btn-danger(ng-click='addFood()') Add Food
+            button.form-control.btn.btn-danger(ng-click='saveFood()') Save Food
     .container
       .row
         .col-xs-12
           table.table.table-striped
             thead
               tr
+                th Edit
+                th Delete
                 th Description
                 th Meal
                 th Calories
                 th Servings
                 th Date
             tbody
-              tr(ng-repeat="food in foods" ng-click="undo()")
+              tr(ng-repeat="food in foods")
+                td: button(ng-click="edit(food)").btn.btn-info.btn-xs Edit
+                td: button(ng-click="undo()").btn.btn-danger.btn-xs Delete
                 td {{food.description}}
                 td {{food.meal}}
                 td {{food.calories}}
