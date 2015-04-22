@@ -1,20 +1,79 @@
 doctype html
-html(lang='en', ng-app='poseidon')
+html(lang='en', ng-app='food-app')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title Poseidon
-    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/superhero/bootstrap.min.css')
+    title Food Tracker
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css')
     link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet', href=isProd ? '/index.min.css' : '/index.css')
     link(rel='shortcut icon', href='/favicon.ico')
-  body
-    .container-fluid
+  body(ng-controller="master")
+    .container
       .row
         .col-xs-12
-          h1 Poseidon
-
+          h1 Food Tracker
+          button.btn.btn-danger(ng-click="showUserForm()") Show User Form
+    .container
+      .row(ng-show="isUserFormShown")
+        .col-xs-12
+          .row
+            .col-xs-6
+              .form-group
+                label(for="name") Name
+                input#name.form-control(type="text" ng-model="user.name")
+            .col-xs-6
+              .form-group
+                label(for="age") Age
+                input.form-control#age(type="number" ng-model="user.age")
+          .form-group
+            label(for="gender") Gender
+            select.form-control#gender(ng-model="user.gender")
+              option(value="Male") Male
+              option(value="Female") Female
+          .row
+            .col-xs-6
+              .form-group
+                label(for="weight") Weight
+                input.form-control#weight(type="number" ng-model="user.weight")
+            .col-xs-6
+              .form-group
+                label(for="height") Height
+                input.form-control#height(type="number" ng-model="user.height")
+                select.form-control(ng-model="user.heightUnit")
+                  option(value="centimeters") Centimeters
+                  option(value="inches") Inches
+    .container
+      .row
+        .col-xs-12
+          .form-group
+            button.form-control.btn.btn-info(ng-click='saveUser()') Save User
+          .row
+            .col-xs-11.col-xs-offset-1
+              h3 Calculated BMI: {{getBmi(user.height, user.weight)}}
+          .row
+            .col-xs-3
+              .form-group
+                label(for="description") Food Name
+                input#description.form-control(type="text" ng-model="food.description")
+            .col-xs-3
+              .form-group
+                label(for="meal") Meal
+                select#meal.form-control(ng-model="food.meal")
+                  option(value="breakfast") Breakfast
+                  option(value="lunch") Lunch
+                  option(value="dinner") Dinner
+            .col-xs-3
+              .form-group
+                label(for="calPerServ") Calories / Serving
+                input#calPerServ.form-control(type="number" ng-model="food.calories")
+            .col-xs-3
+              .form-group
+                label(for="servings") # of Servings
+                input#servings.form-control(type="number" ng-model="food.servings")
+          .form-group
+            button.form-control.btn.btn-danger(ng-click='addFood()') Add Food
     script(src='/vendor/jquery/dist/jquery.min.js')
     script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
     script(src='/vendor/lodash/lodash.min.js')
